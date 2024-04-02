@@ -1,0 +1,37 @@
+const Matic = require('maticjs').default;
+
+// 设置 Matic 主网和测试网的 RPC 端点
+const matic = new Matic({
+  network: 'testnet', // 使用 'mainnet' 或 'testnet'
+  version: 'mumbai', // 使用 'mumbai' 或 'v1'，取决于您连接的是 Matic 主网还是测试网
+  parentProvider: 'https://rpc-mumbai.matic.today', // Matic 主网或测试网的 RPC 端点
+  maticProvider: 'https://rpc-mumbai.matic.today', // Matic 主网或测试网的 RPC 端点
+});
+
+// 设置账户私钥
+const privateKey = 'YOUR_PRIVATE_KEY';
+
+// 设置发送方和接收方地址
+const from = 'YOUR_SENDER_ADDRESS';
+const to = 'RECIPIENT_ADDRESS';
+
+// 设置代币合约地址
+const token = 'TOKEN_CONTRACT_ADDRESS';
+
+// 设置转账金额（以 wei 为单位）
+const amount = '1000000000000000000'; // 1 MATIC
+
+// 连接到 Matic 网络
+matic.wallet = new matic.web3.eth.accounts.privateKeyWallet(privateKey);
+
+// 执行转账
+matic.transferTokens(token, to, amount, {
+  from,
+  onTransactionHash: (hash) => {
+    console.log('Transaction hash:', hash);
+  },
+}).then((res) => {
+  console.log('Transfer successful:', res);
+}).catch((error) => {
+  console.error('Error occurred:', error);
+});
